@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 640" width="900" height="640" font-family="Segoe UI, Arial, sans-serif">
+  <title>ESP32 controller wiring: 8 buttons between GPIO and GND</title>
+  <rect width="900" height="640" fill="#ffffff"/>
+
+  <!-- heading -->
+  <text x="450" y="34" font-size="20" font-weight="700" text-anchor="middle" fill="#1b2233">Drift Game 2 controller wiring (ESP32 DevKit V1, 30-pin, top view)</text>
+
+  <!-- ESP32 board -->
+  <rect x="380" y="70" width="180" height="480" rx="10" fill="#1f3b73" stroke="#0e1f40" stroke-width="2"/>
+  <rect x="425" y="80" width="90" height="46" rx="4" fill="#c9ced6" stroke="#8a919c"/>
+  <text x="470" y="108" font-size="12" text-anchor="middle" fill="#1b2233">antenna</text>
+  <rect x="440" y="530" width="60" height="30" rx="4" fill="#c9ced6" stroke="#8a919c"/>
+  <text x="470" y="550" font-size="11" text-anchor="middle" fill="#1b2233">USB</text>
+  <text x="470" y="330" font-size="22" font-weight="700" text-anchor="middle" fill="#ffffff">ESP32</text>
+  <text x="470" y="352" font-size="12" text-anchor="middle" fill="#cfe0ff">DevKit V1</text>
+
+  <!-- left pin header -->
+  <g font-size="12" fill="#ffffff">
+    <g fill="#f2c230" stroke="#7a5a00">
+      <circle cx="392" cy="140" r="5"/><circle cx="392" cy="165" r="5"/><circle cx="392" cy="190" r="5"/>
+      <circle cx="392" cy="215" r="5"/><circle cx="392" cy="240" r="5"/><circle cx="392" cy="265" r="5"/>
+      <circle cx="392" cy="290" r="5"/><circle cx="392" cy="315" r="5"/><circle cx="392" cy="340" r="5"/>
+      <circle cx="392" cy="365" r="5"/><circle cx="392" cy="390" r="5"/><circle cx="392" cy="415" r="5"/>
+      <circle cx="392" cy="440" r="5"/><circle cx="392" cy="465" r="5"/><circle cx="392" cy="490" r="5"/>
+    </g>
+    <text x="402" y="144">EN</text><text x="402" y="169">VP</text><text x="402" y="194">VN</text>
+    <text x="402" y="219">D34</text><text x="402" y="244">D35</text>
+    <text x="402" y="269" font-weight="700" fill="#ffd84a">D32</text>
+    <text x="402" y="294" font-weight="700" fill="#ffd84a">D33</text>
+    <text x="402" y="319" font-weight="700" fill="#ffd84a">D25</text>
+    <text x="402" y="344" font-weight="700" fill="#ffd84a">D26</text>
+    <text x="402" y="369" font-weight="700" fill="#7fd1ff">D27</text>
+    <text x="402" y="394" font-weight="700" fill="#7fd1ff">D14</text>
+    <text x="402" y="419">D12</text>
+    <text x="402" y="444" font-weight="700" fill="#7fd1ff">D13</text>
+    <text x="402" y="469" font-weight="700">GND</text>
+    <text x="402" y="494">VIN</text>
+  </g>
+
+  <!-- right pin header -->
+  <g font-size="12" fill="#ffffff" text-anchor="end">
+    <g fill="#f2c230" stroke="#7a5a00">
+      <circle cx="548" cy="140" r="5"/><circle cx="548" cy="165" r="5"/><circle cx="548" cy="190" r="5"/>
+      <circle cx="548" cy="215" r="5"/><circle cx="548" cy="240" r="5"/><circle cx="548" cy="265" r="5"/>
+      <circle cx="548" cy="290" r="5"/><circle cx="548" cy="315" r="5"/><circle cx="548" cy="340" r="5"/>
+      <circle cx="548" cy="365" r="5"/><circle cx="548" cy="390" r="5"/><circle cx="548" cy="415" r="5"/>
+      <circle cx="548" cy="440" r="5"/><circle cx="548" cy="465" r="5"/><circle cx="548" cy="490" r="5"/>
+    </g>
+    <text x="538" y="144">D23</text><text x="538" y="169">D22</text><text x="538" y="194">TX0</text>
+    <text x="538" y="219">RX0</text><text x="538" y="244">D21</text><text x="538" y="269">D19</text>
+    <text x="538" y="294">D18</text><text x="538" y="319">D5</text><text x="538" y="344">D17</text>
+    <text x="538" y="369">D16</text>
+    <text x="538" y="394" font-weight="700" fill="#7fd1ff">D4</text>
+    <text x="538" y="419">D2</text><text x="538" y="444">D15</text>
+    <text x="538" y="469" font-weight="700">GND</text>
+    <text x="538" y="494">3V3</text>
+  </g>
+
+  <!-- GND bus (left) -->
+  <line x1="70" y1="265" x2="70" y2="465" stroke="#111111" stroke-width="3"/>
+  <line x1="70" y1="465" x2="392" y2="465" stroke="#111111" stroke-width="3"/>
+  <text x="62" y="258" font-size="12" font-weight="700" text-anchor="middle" fill="#111111">GND</text>
+
+  <!-- button symbol: two terminals + a lever; drawn per row -->
+  <g stroke-width="2.5" fill="none">
+    <!-- P1 GAS - GPIO32 -->
+    <line x1="70" y1="265" x2="150" y2="265" stroke="#111"/>
+    <line x1="190" y1="265" x2="392" y2="265" stroke="#e08a00"/>
+    <!-- P1 BRAKE - GPIO33 -->
+    <line x1="70" y1="290" x2="150" y2="290" stroke="#111"/>
+    <line x1="190" y1="290" x2="392" y2="290" stroke="#e08a00"/>
+    <!-- P1 LEFT - GPIO25 -->
+    <line x1="70" y1="315" x2="150" y2="315" stroke="#111"/>
+    <line x1="190" y1="315" x2="392" y2="315" stroke="#e08a00"/>
+    <!-- P1 RIGHT - GPIO26 -->
+    <line x1="70" y1="340" x2="150" y2="340" stroke="#111"/>
+    <line x1="190" y1="340" x2="392" y2="340" stroke="#e08a00"/>
+    <!-- P2 GAS - GPIO27 -->
+    <line x1="70" y1="365" x2="150" y2="365" stroke="#111"/>
+    <line x1="190" y1="365" x2="392" y2="365" stroke="#2a86d8"/>
+    <!-- P2 BRAKE - GPIO14 -->
+    <line x1="70" y1="390" x2="150" y2="390" stroke="#111"/>
+    <line x1="190" y1="390" x2="392" y2="390" stroke="#2a86d8"/>
+    <!-- P2 LEFT - GPIO13 -->
+    <line x1="70" y1="440" x2="150" y2="440" stroke="#111"/>
+    <line x1="190" y1="440" x2="392" y2="440" stroke="#2a86d8"/>
+  </g>
+  <!-- the buttons themselves -->
+  <g fill="#ffffff" stroke="#111" stroke-width="2">
+    <circle cx="150" cy="265" r="4"/><circle cx="190" cy="265" r="4"/>
+    <circle cx="150" cy="290" r="4"/><circle cx="190" cy="290" r="4"/>
+    <circle cx="150" cy="315" r="4"/><circle cx="190" cy="315" r="4"/>
+    <circle cx="150" cy="340" r="4"/><circle cx="190" cy="340" r="4"/>
+    <circle cx="150" cy="365" r="4"/><circle cx="190" cy="365" r="4"/>
+    <circle cx="150" cy="390" r="4"/><circle cx="190" cy="390" r="4"/>
+    <circle cx="150" cy="440" r="4"/><circle cx="190" cy="440" r="4"/>
+  </g>
+  <g stroke="#111" stroke-width="2.5">
+    <line x1="150" y1="256" x2="190" y2="256"/><line x1="170" y1="256" x2="170" y2="250"/>
+    <line x1="150" y1="281" x2="190" y2="281"/><line x1="170" y1="281" x2="170" y2="275"/>
+    <line x1="150" y1="306" x2="190" y2="306"/><line x1="170" y1="306" x2="170" y2="300"/>
+    <line x1="150" y1="331" x2="190" y2="331"/><line x1="170" y1="331" x2="170" y2="325"/>
+    <line x1="150" y1="356" x2="190" y2="356"/><line x1="170" y1="356" x2="170" y2="350"/>
+    <line x1="150" y1="381" x2="190" y2="381"/><line x1="170" y1="381" x2="170" y2="375"/>
+    <line x1="150" y1="431" x2="190" y2="431"/><line x1="170" y1="431" x2="170" y2="425"/>
+  </g>
+  <g font-size="12" font-weight="700">
+    <text x="210" y="260" fill="#b36b00">P1 GAS → GPIO 32</text>
+    <text x="210" y="285" fill="#b36b00">P1 BRAKE → GPIO 33</text>
+    <text x="210" y="310" fill="#b36b00">P1 LEFT → GPIO 25</text>
+    <text x="210" y="335" fill="#b36b00">P1 RIGHT → GPIO 26</text>
+    <text x="210" y="360" fill="#1d63a8">P2 GAS → GPIO 27</text>
+    <text x="210" y="385" fill="#1d63a8">P2 BRAKE → GPIO 14</text>
+    <text x="210" y="435" fill="#1d63a8">P2 LEFT → GPIO 13</text>
+  </g>
+
+  <!-- P2 RIGHT on GPIO4 (right header) -->
+  <g stroke-width="2.5" fill="none">
+    <line x1="548" y1="390" x2="700" y2="390" stroke="#2a86d8"/>
+    <line x1="740" y1="390" x2="800" y2="390" stroke="#111"/>
+    <line x1="800" y1="390" x2="800" y2="465" stroke="#111"/>
+    <line x1="800" y1="465" x2="548" y2="465" stroke="#111" stroke-width="3"/>
+  </g>
+  <g fill="#ffffff" stroke="#111" stroke-width="2"><circle cx="700" cy="390" r="4"/><circle cx="740" cy="390" r="4"/></g>
+  <g stroke="#111" stroke-width="2.5"><line x1="700" y1="381" x2="740" y2="381"/><line x1="720" y1="381" x2="720" y2="375"/></g>
+  <text x="575" y="383" font-size="12" font-weight="700" fill="#1d63a8">P2 RIGHT → GPIO 4</text>
+  <text x="808" y="470" font-size="12" font-weight="700" fill="#111">GND</text>
+
+  <!-- legend -->
+  <g font-size="13" fill="#1b2233">
+    <rect x="40" y="565" width="820" height="62" rx="8" fill="#f3f5f9" stroke="#d5dae3"/>
+    <line x1="60" y1="586" x2="100" y2="586" stroke="#e08a00" stroke-width="3"/><text x="108" y="590">Player 1 signal wire</text>
+    <line x1="260" y1="586" x2="300" y2="586" stroke="#2a86d8" stroke-width="3"/><text x="308" y="590">Player 2 signal wire</text>
+    <line x1="460" y1="586" x2="500" y2="586" stroke="#111" stroke-width="3"/><text x="508" y="590">Ground (GND)</text>
+    <text x="60" y="614">Every button: one leg to its GPIO, the other leg to GND. No resistors needed (internal pull-ups, pressed = LOW).</text>
+  </g>
+</svg>

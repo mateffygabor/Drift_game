@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- Only our own scripts may run; network access is limited to this site and the
+     optional ESP32 WebSocket controller (ws:/wss:). -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' ws: wss:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Drift Game 2 - a 3D browser drift racing game with split screen, bots, ghost cars and an optional DIY ESP32 controller.">
+<title>Drift Game 2</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ===================== MAIN MENU ===================== -->
+<div id="screen-menu" class="screen active">
+  <div class="lang-switch" id="setting-lang" role="group" aria-label="Language / Nyelv">
+    <button data-v="hu" lang="hu">Magyar</button><button data-v="en" lang="en">English</button>
+  </div>
+  <header class="menu-header">
+    <h1 class="title">DRIFT<span>GAME</span><sup>2</sup></h1>
+    <p class="tagline" data-i18n="menu.tagline"></p>
+  </header>
+
+  <div class="menu-grid">
+    <section class="menu-panel menu-main">
+      <h2 data-i18n="menu.mode"></h2>
+      <div class="mode-toggle">
+        <button id="mode-practice" class="mode-btn active" data-i18n="mode.practice"></button>
+        <button id="mode-solo" class="mode-btn" data-i18n="mode.solo"></button>
+        <button id="mode-duo" class="mode-btn" data-i18n="mode.duo"></button>
+      </div>
+      <p class="hint" id="mode-hint"></p>
+
+      <h2 data-i18n="menu.track"></h2>
+      <div id="track-list" class="track-list"></div>
+    </section>
+
+    <aside class="menu-side">
+      <section class="menu-panel">
+        <h2 data-i18n="menu.name"></h2>
+        <div class="menu-row">
+          <input id="player-name" type="text" maxlength="12" autocomplete="off" data-i18n-placeholder="menu.namePlaceholder">
+        </div>
+        <p class="hint" data-i18n="menu.nameHint"></p>
+      </section>
+
+      <section class="menu-panel">
+        <h2 data-i18n="menu.settings"></h2>
+        <div class="slider-row">
+          <label for="setting-speed"><span data-i18n="set.speed"></span> <span id="setting-speed-value" class="slider-value">100%</span></label>
+          <input id="setting-speed" type="range" min="40" max="160" step="5" value="100">
+        </div>
+        <div class="slider-row">
+          <label for="setting-sensitivity"><span data-i18n="set.sensitivity"></span> <span id="setting-sensitivity-value" class="slider-value">80%</span></label>
+          <input id="setting-sensitivity" type="range" min="30" max="100" step="5" value="80">
+        </div>
+        <div class="slider-row">
+          <label for="setting-drift"><span data-i18n="set.drift"></span> <span id="setting-drift-value" class="slider-value">60%</span></label>
+          <input id="setting-drift" type="range" min="0" max="100" step="5" value="60">
+        </div>
+        <p class="hint small" data-i18n="set.driftHint"></p>
+        <div class="slider-row">
+          <label for="setting-volume"><span data-i18n="set.volume"></span> <span id="setting-volume-value" class="slider-value">70%</span></label>
+          <input id="setting-volume" type="range" min="0" max="100" step="5" value="70">
+        </div>
+        <div class="select-row">
+          <span data-i18n="set.camera"></span>
+          <div class="seg" id="setting-camera">
+            <button data-v="near" data-i18n="set.camera.near"></button><button data-v="far" data-i18n="set.camera.far"></button><button data-v="top" data-i18n="set.camera.top"></button>
+          </div>
+        </div>
+        <div class="select-row">
+          <span data-i18n="set.quality"></span>
+          <div class="seg" id="setting-quality">
+            <button data-v="low" data-i18n="set.quality.low"></button><button data-v="medium" data-i18n="set.quality.medium"></button><button data-v="high" data-i18n="set.quality.high"></button>
+          </div>
+        </div>
+        <div class="select-row">
+          <span data-i18n="set.split"></span>
+          <div class="seg" id="setting-swap">
+            <button data-v="0" data-i18n="set.split.left"></button><button data-v="1" data-i18n="set.split.right"></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="menu-panel">
+        <h2 data-i18n="menu.controller"></h2>
+        <div class="menu-row">
+          <input id="wifi-host" type="text" maxlength="253" autocomplete="off" spellcheck="false" data-i18n-placeholder="ctl.wifiPlaceholder">
+          <button id="btn-wifi" class="btn btn-primary" data-i18n="ctl.wifiConnect"></button>
+          <span id="wifi-status" class="status-dot status-off"></span>
+        </div>
+        <div class="menu-row">
+          <button id="btn-controller" class="btn btn-secondary" data-i18n="ctl.usbConnect"></button>
+          <span id="controller-status" class="status-dot status-off"></span>
+        </div>
+        <p class="hint" data-i18n-html="ctl.hint"></p>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<!-- ===================== GARAGE (vehicle selection) ===================== -->
+<div id="screen-garage" class="screen">
+  <header class="garage-header">
+    <button id="btn-garage-back" class="btn btn-secondary" data-i18n="garage.back"></button>
+    <div>
+      <h2 id="garage-title"></h2>
+      <p id="garage-sub" class="hint"></p>
+    </div>
+    <button id="btn-garage-start" class="btn btn-primary btn-big" data-i18n="garage.start"></button>
+  </header>
+
+  <div class="garage-body">
+    <div id="garage-players" class="garage-players"></div>
+    <aside class="garage-side">
+      <div id="race-options" class="menu-panel hidden">
+        <h2 data-i18n="garage.laps"></h2>
+        <div class="seg" id="setting-laps">
+          <button data-v="1">1</button><button data-v="3">3</button><button data-v="5">5</button><button data-v="10">10</button>
+        </div>
+        <h2 data-i18n="garage.bots"></h2>
+        <div class="seg" id="setting-bots">
+          <button data-v="0">0</button><button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button><button data-v="4">4</button><button data-v="5">5</button>
+        </div>
+        <h2 data-i18n="garage.botLevel"></h2>
+        <div class="seg" id="setting-botlevel">
+          <button data-v="easy" data-i18n="level.easy"></button><button data-v="medium" data-i18n="level.medium"></button><button data-v="hard" data-i18n="level.hard"></button>
+        </div>
+        <p class="hint" data-i18n="garage.raceHint"></p>
+      </div>
+      <div class="menu-panel">
+        <h2 data-i18n="garage.ghost"></h2>
+        <div class="seg" id="setting-ghost">
+          <button data-v="off" data-i18n="ghost.off"></button><button data-v="p1"></button><button data-v="p2" data-i18n="ghost.p2"></button>
+        </div>
+        <p class="hint" data-i18n="garage.ghostHint"></p>
+      </div>
+      <div id="leaderboard-box" class="menu-panel">
+        <h2 data-i18n="garage.leaderboard"></h2>
+        <ol id="leaderboard-list" class="leaderboard-list"></ol>
+      </div>
+      <p class="hint garage-help" data-i18n-html="garage.help"></p>
+    </aside>
+  </div>
+</div>
+
+<!-- ===================== RACE ===================== -->
+<div id="screen-race" class="screen">
+  <canvas id="game-canvas"></canvas>
+  <div id="views" class="views"></div>
+  <div id="split-divider" class="split-divider hidden"></div>
+
+  <div id="countdown" class="countdown"></div>
+
+  <button id="btn-pause" class="btn btn-icon" data-i18n-title="race.pauseTitle">II</button>
+  <div id="conn-indicator" class="conn-indicator hidden"></div>
+
+  <div id="loading-overlay" class="overlay hidden">
+    <div class="loading" data-i18n="race.loading"></div>
+  </div>
+
+  <div id="pause-overlay" class="overlay hidden">
+    <div class="overlay-panel">
+      <h2 data-i18n="pause.title"></h2>
+      <p id="pause-info" class="hint pause-info"></p>
+      <button id="btn-resume" class="btn btn-primary" data-i18n="pause.resume"></button>
+      <button id="btn-reset-car" class="btn btn-secondary" data-i18n="pause.resetCar"></button>
+      <button id="btn-restart" class="btn btn-secondary" data-i18n="pause.restart"></button>
+      <button id="btn-quit" class="btn btn-secondary" data-i18n="pause.quit"></button>
+    </div>
+  </div>
+
+  <div id="winner-overlay" class="overlay hidden">
+    <div class="overlay-panel winner-panel">
+      <h2 id="winner-title" data-i18n="win.title"></h2>
+      <table id="winner-table" class="winner-table"></table>
+      <div class="menu-row center">
+        <button id="btn-winner-retry" class="btn btn-primary" data-i18n="win.retry"></button>
+        <button id="btn-winner-garage" class="btn btn-secondary" data-i18n="win.garage"></button>
+        <button id="btn-winner-menu" class="btn btn-secondary" data-i18n="win.menu"></button>
+      </div>
+      <p class="hint" data-i18n-html="win.hint"></p>
+    </div>
+  </div>
+</div>
+
+<noscript><p style="padding:24px;color:#fff">Drift Game 2 needs JavaScript and WebGL.</p></noscript>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
