@@ -5,9 +5,7 @@ Race alone against the clock or a ghost car, against up to five bots, or with a
 friend on a split screen. Optionally plug in a home-made **ESP32 button
 controller**.
 
-**▶ Play it:** `https://<your-username>.github.io/<repository>/` *(replace with
-your GitHub Pages address once it is published - see
-[Deployment](docs/DEVELOPER_GUIDE.md#deployment-github-pages))*
+**▶ Play it:** https://mateffygabor.github.io/Drift_game/
 
 The interface is available in **English** and **Hungarian** (switch in the top-right corner of the menu).
 
