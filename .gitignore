@@ -13,3 +13,6 @@ build/
 *.bin
 *.elf
 tools/last_*.png
+
+# ESP32 WiFi credentials (copy secrets.example.h to secrets.h)
+esp32/**/secrets.h

@@ -154,9 +154,15 @@ Build tips:
    Library → Manage Libraries…**, search **WebSockets**, install the one by
    **Markus Sattler (links2004)**.
 4. Open the sketch, e.g. `esp32/drift_controller_wifi_ap/drift_controller_wifi_ap.ino`.
-5. Edit the settings at the top if needed:
-   - **WiFi AP version:** change `AP_PASSWORD` (8+ characters) – the default is public, and anyone who knows it can join the controller's network.
-   - **Home WiFi version:** put your network name and password into `WIFI_SSID` / `WIFI_PASSWORD`. Don't publish your real password in a public repository.
+5. *(WiFi versions only)* In the sketch's folder, copy `secrets.example.h` to
+   **`secrets.h`** and edit the copy. `secrets.h` is git-ignored, so your
+   password never ends up in the repository.
+   - **WiFi AP version:** choose your own `AP_PASSWORD` (8–63 characters). Anyone who knows it can join the controller's network.
+   - **Home WiFi version:** put your network name and password into `WIFI_SSID` / `WIFI_PASSWORD`.
+
+   The values in the template are commented out (`//`) – remove the `//` after
+   filling them in. The sketch refuses to compile while `secrets.h` is missing
+   or the values aren't set.
 6. Plug in the ESP32, select **Tools → Board → ESP32 Dev Module** (or your board) and the right **Port**.
 7. Click **Upload**. If it hangs at `Connecting....`, hold the board's **BOOT** button until the upload starts.
 
@@ -166,7 +172,7 @@ flowchart TD
     B --> C{WiFi firmware?}
     C -- yes --> D[Library Manager: WebSockets by Markus Sattler]
     C -- no --> E
-    D --> E[Open sketch, adjust password / SSID]
+    D --> E[Copy secrets.example.h to secrets.h, set password / SSID]
     E --> F[Select board + port]
     F --> G[Upload]
     G --> H[Serial Monitor 115200: test buttons]

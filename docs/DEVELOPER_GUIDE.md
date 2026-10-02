@@ -244,13 +244,14 @@ except the optional controller link. Results of the review:
 | Area | Status |
 |---|---|
 | **HTML injection** | User-controlled text (player name, leaderboard entries, bot/vehicle names) is inserted with `textContent` or escaped before going into `innerHTML`. `data-i18n-html` is only used for strings we write ourselves. |
-| **Content-Security-Policy** | `index.html` allows only same-origin scripts (no inline scripts, no `eval`), images from self/`data:`/`blob:`, and connections to self plus `ws:`/`wss:` for the controller. Inline *styles* are allowed (the HUD sets CSS variables). |
+| **Content-Security-Policy** | `index.html` allows only same-origin scripts (no inline scripts, no `eval`), images from self/`data:`/`blob:`, and connections to self plus `ws:` for the controller (the ESP32 cannot do TLS, so `wss:` is not allowed). Inline *styles* are allowed (the HUD sets CSS variables). |
 | **localStorage tampering** | Settings, bot counts, selections, volume, the leaderboard and ghost laps are validated. Previously an invalid laps value made a race never end (`NaN`) and an invalid colour index crashed the garage. |
 | **Controller host** | The WiFi address is validated as a plain host name / IPv4 before building `ws://<host>:81/`, so it can't inject a path, port or scheme. |
 | **Controller data** | Only lines of exactly eight `0`/`1` values are accepted. |
 | **Mixed content** | Browsers block `ws://` from an HTTPS page (GitHub Pages). The game detects this and shows a message instead of retrying forever; USB works there. |
 | **Local server** | `start.bat` binds the Python server to `127.0.0.1`, so the project folder isn't served to the whole network (previously it listened on every interface). |
-| **Firmware – WiFi AP** | The default AP password `drift1234` is public in this repository: change `AP_PASSWORD` before using the controller in public. The WebSocket server has no authentication – anyone on the controller's network can read the (harmless) button stream. |
+| **Firmware – WiFi credentials** | WiFi names and passwords live in a per-sketch `secrets.h` that is git-ignored; only `secrets.example.h` templates are committed. The templates ship with the values commented out, so a sketch fails to compile (`#error`) until real values are set; the AP sketch also rejects a password outside 8–63 characters (`static_assert`). |
+| **Firmware – WebSocket** | The server has no authentication or Origin check – anyone on the controller's network (or a web page open on a connected computer) can read the (harmless) button stream. Incoming messages are ignored, so nobody can control the ESP32 through it. |
 | **Firmware – home WiFi** | Your network credentials are compiled into the sketch – never commit real ones. |
 | **Third-party code** | three.js is vendored (no CDN), so the site loads nothing from other origins. |
 

@@ -47,10 +47,18 @@
 #include <WebSocketsServer.h>
 #include <ESPmDNS.h>
 
-// ---- PUT YOUR OWN WIFI DETAILS HERE (never commit real ones to a public repo) ----
-// The ESP32 only supports 2.4 GHz networks.
-const char* WIFI_SSID = "YOUR_WIFI_NAME";
-const char* WIFI_PASSWORD = "YOUR_WIFI_PASSWORD";
+// ---- Your WiFi details live in secrets.h (git-ignored, never committed) ----
+// First time: copy secrets.example.h to secrets.h in this folder and put
+// your network name and password into it. The ESP32 only supports 2.4 GHz.
+#if __has_include("secrets.h")
+#include "secrets.h"
+#else
+#error "secrets.h is missing: copy secrets.example.h to secrets.h (same folder) and fill in WIFI_SSID / WIFI_PASSWORD."
+#endif
+
+#if !defined(WIFI_SSID) || !defined(WIFI_PASSWORD)
+#error "Set WIFI_SSID and WIFI_PASSWORD in secrets.h (and remove the // in front of them)."
+#endif
 
 const int PIN_P1_GAS   = 32;
 const int PIN_P1_BRAKE = 33;

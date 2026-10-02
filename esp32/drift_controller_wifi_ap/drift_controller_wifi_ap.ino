@@ -15,7 +15,7 @@
 //
 // How it works:
 // 1. After uploading, the ESP32 starts its own WiFi network (by default named
-//    "DriftController" - set the name and password below).
+//    "DriftController" - set the name and password in secrets.h, see below).
 // 2. On your computer, pick this network from the WiFi list and connect.
 // 3. As an access point the ESP32 ALWAYS uses the fixed IP address
 //    192.168.4.1 - enter it in the game's WiFi field.
@@ -51,12 +51,21 @@
 #include <WebSocketsServer.h>
 
 // ---- Name / password of the controller's own WiFi network ----
-// CHANGE THE PASSWORD: the default one below is public (it is in this
-// repository), and anyone on this network can read the button stream.
-// It must be at least 8 characters long. For an open network (not
-// recommended) use: const char* AP_PASSWORD = "";
-const char* AP_SSID     = "DriftController";
-const char* AP_PASSWORD = "drift1234";
+// They live in secrets.h (git-ignored, so the password is never committed).
+// First time: copy secrets.example.h to secrets.h in this folder and set
+// your own password (8-63 characters). Anyone who knows it can join the
+// network and read the button stream.
+#if __has_include("secrets.h")
+#include "secrets.h"
+#else
+#error "secrets.h is missing: copy secrets.example.h to secrets.h (same folder) and set your own AP_PASSWORD."
+#endif
+
+#if !defined(AP_SSID) || !defined(AP_PASSWORD)
+#error "Set AP_SSID and AP_PASSWORD in secrets.h (and remove the // in front of them)."
+#endif
+static_assert(sizeof(AP_PASSWORD) - 1 >= 8 && sizeof(AP_PASSWORD) - 1 <= 63,
+              "AP_PASSWORD in secrets.h must be 8-63 characters long.");
 
 const int PIN_P1_GAS   = 32;
 const int PIN_P1_BRAKE = 33;

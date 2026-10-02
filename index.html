@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <!-- Only our own scripts may run; network access is limited to this site and the
-     optional ESP32 WebSocket controller (ws:/wss:). -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' ws: wss:; object-src 'none'; base-uri 'none'; form-action 'none'">
+     optional ESP32 WebSocket controller (plain ws: - the ESP32 has no TLS). -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' ws:; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="Drift Game 2 - a 3D browser drift racing game with split screen, bots, ghost cars and an optional DIY ESP32 controller.">
 <title>Drift Game 2</title>
